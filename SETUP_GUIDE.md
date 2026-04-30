@@ -227,7 +227,7 @@ git init
 git add .
 git commit -m "Initial commit"
 git branch -M main
-git remote add origin https://github.com/YOUR_USERNAME/portfolio-rag.git
+git remote add origin https://github.com/AbdessemedAI/portfolio-rag.git
 git push -u origin main
 ```
 
@@ -263,7 +263,7 @@ You have two options:
 ```bash
 cd ~/Desktop/portfolio-rag/backend
 git init
-git remote add origin https://huggingface.co/spaces/YOUR_HF_USERNAME/portfolio-rag
+git remote add origin https://huggingface.co/spaces/abdessemed/portfolio-rag
 git add .
 git commit -m "Initial backend"
 git push -u origin main

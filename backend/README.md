@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Portfolio RAG Backend
 
 FastAPI + ChromaDB + Groq (Llama 3.3 70B) + Whisper.
@@ -41,3 +42,17 @@ Edit files in `knowledge_base/`, then:
 python ingest.py         # rebuild index
 # or push to HF Space — it rebuilds automatically
 ```
+=======
+---
+title: Portfolio Rag
+emoji: 🚀
+colorFrom: blue
+colorTo: red
+sdk: docker
+pinned: false
+license: mit
+short_description: portfolio
+---
+
+Check out the configuration reference at https://huggingface.co/docs/hub/spaces-config-reference
+>>>>>>> 7ef45489bb0f62aad1dccc82c4512feca6102754
