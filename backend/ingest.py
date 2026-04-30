@@ -1,8 +1,8 @@
 """
-ingest.py — One-time script to chunk knowledge base files and build the ChromaDB index.
-Run once before starting the server, or whenever you update the knowledge_base/ files.
-
-Usage:  python ingest.py
+ingest.py — Builds the ChromaDB index from knowledge_base/ files.
+Strategy:
+  - 00_summary.md is stored as ONE chunk (never split) so it's always retrievable
+  - Other files are chunked by H2 sections
 """
 
 import os
@@ -13,58 +13,43 @@ from chromadb.utils import embedding_functions
 KNOWLEDGE_DIR = "knowledge_base"
 CHROMA_DIR = "chroma_db"
 COLLECTION_NAME = "portfolio"
-EMBEDDING_MODEL = "all-MiniLM-L6-v2"  # small, fast, free, good enough
+EMBEDDING_MODEL = "all-MiniLM-L6-v2"
 
 
-def chunk_markdown(text: str, max_chars: int = 800) -> list[str]:
+def chunk_file(filename: str, text: str) -> list[str]:
     """
-    Split markdown by H2 sections, then further split long sections by paragraphs.
-    Keeps semantic units (a project, a skill category) together when possible.
+    00_summary.md → always one single chunk (it's an index, must stay whole).
+    Other files → split by H3 sections (###), fallback to H2 (##).
     """
-    # Split on H2 headers (## ) but keep the header with its section
-    sections = []
+    if "00_summary" in filename:
+        # Never split the summary — return as one chunk
+        return [text.strip()]
+
+    chunks = []
     current = []
     for line in text.split("\n"):
-        if line.startswith("## ") and current:
-            sections.append("\n".join(current).strip())
+        if (line.startswith("### ") or line.startswith("## ")) and current:
+            chunk = "\n".join(current).strip()
+            if len(chunk) > 30:
+                chunks.append(chunk)
             current = [line]
         else:
             current.append(line)
     if current:
-        sections.append("\n".join(current).strip())
+        chunk = "\n".join(current).strip()
+        if len(chunk) > 30:
+            chunks.append(chunk)
 
-    # Further split any section that's too long
-    chunks = []
-    for section in sections:
-        if len(section) <= max_chars:
-            chunks.append(section)
-        else:
-            # Split by paragraphs, repacking until max_chars
-            paragraphs = [p.strip() for p in section.split("\n\n") if p.strip()]
-            buf = ""
-            for p in paragraphs:
-                if len(buf) + len(p) + 2 <= max_chars:
-                    buf = f"{buf}\n\n{p}" if buf else p
-                else:
-                    if buf:
-                        chunks.append(buf)
-                    buf = p
-            if buf:
-                chunks.append(buf)
-
-    return [c for c in chunks if len(c.strip()) > 20]
+    return chunks
 
 
 def main():
-    # Setup embedding function (runs locally, fully free)
     embed_fn = embedding_functions.SentenceTransformerEmbeddingFunction(
         model_name=EMBEDDING_MODEL
     )
 
-    # Init persistent Chroma client
     client = chromadb.PersistentClient(path=CHROMA_DIR)
 
-    # Reset the collection each run so re-ingest is clean
     try:
         client.delete_collection(COLLECTION_NAME)
     except Exception:
@@ -76,7 +61,6 @@ def main():
         metadata={"hnsw:space": "cosine"},
     )
 
-    # Load & chunk all markdown files
     all_chunks = []
     all_metadata = []
     all_ids = []
@@ -91,7 +75,7 @@ def main():
         with open(filepath, "r", encoding="utf-8") as f:
             content = f.read()
 
-        chunks = chunk_markdown(content)
+        chunks = chunk_file(filename, content)
         print(f"📄 {filename}: {len(chunks)} chunks")
 
         for i, chunk in enumerate(chunks):
@@ -99,11 +83,8 @@ def main():
             all_metadata.append({"source": filename, "chunk_index": i})
             all_ids.append(f"{filename}_{i}")
 
-    # Add to collection (Chroma handles embedding automatically)
     collection.add(documents=all_chunks, metadatas=all_metadata, ids=all_ids)
-
-    print(f"\n✅ Indexed {len(all_chunks)} chunks into '{COLLECTION_NAME}'")
-    print(f"   Stored at: {os.path.abspath(CHROMA_DIR)}")
+    print(f"\n✅ Indexed {len(all_chunks)} total chunks into '{COLLECTION_NAME}'")
 
 
 if __name__ == "__main__":
