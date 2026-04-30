@@ -22,8 +22,8 @@ LLM_MODEL = "llama-3.3-70b-versatile"
 
 # Cosine distance threshold. Chroma returns distance = 1 - similarity.
 # Lower distance = more similar. Tune between 0.9 and 1.2 after testing.
-RELEVANCE_THRESHOLD = 1.45
-TOP_K = 6
+RELEVANCE_THRESHOLD = 1.5
+TOP_K = 12
 
 OFF_TOPIC_RESPONSE = (
     "I only answer questions about Abderrahim's background, education, projects, "
