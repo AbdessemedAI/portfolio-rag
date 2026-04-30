@@ -1,16 +1,11 @@
 """
 main.py — FastAPI app exposing the RAG chatbot + voice transcription.
-
-Endpoints:
-  GET  /              Health check
-  POST /chat          Non-streaming chat
-  POST /chat/stream   Streaming chat (Server-Sent Events)
-  POST /transcribe    Audio -> text via Groq Whisper
 """
 
 import os
 import io
 import json
+import subprocess
 from typing import Optional
 
 from dotenv import load_dotenv
@@ -36,13 +31,25 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Load RAG engine once at startup
 rag: Optional[RAGEngine] = None
 
 
 @app.on_event("startup")
 def startup():
     global rag
+    # Always rebuild the index from knowledge_base/ at startup
+    # This ensures any update to .md files is picked up immediately
+    print("🔄 Rebuilding knowledge base index...")
+    result = subprocess.run(
+        ["python", "ingest.py"],
+        capture_output=True,
+        text=True
+    )
+    print(result.stdout)
+    if result.returncode != 0:
+        print("❌ ingest.py error:", result.stderr)
+    else:
+        print("✅ Index rebuilt successfully.")
     rag = RAGEngine()
     print("✅ RAG engine ready.")
 
@@ -50,7 +57,7 @@ def startup():
 # ---------------- Schemas ----------------
 
 class ChatTurn(BaseModel):
-    role: str  # "user" | "assistant"
+    role: str
     content: str
 
 
@@ -85,7 +92,6 @@ def chat_stream(req: ChatRequest):
     history = [t.model_dump() for t in req.history]
 
     def event_stream():
-        # First, send the source info (non-streaming part)
         chunks, metadatas, distances, is_relevant = rag.retrieve(req.message)
         sources = [
             {"source": m.get("source", "unknown"), "distance": round(d, 3)}
@@ -93,7 +99,6 @@ def chat_stream(req: ChatRequest):
         ]
         yield f"data: {json.dumps({'type': 'sources', 'sources': sources, 'off_topic': not is_relevant})}\n\n"
 
-        # Then stream tokens
         for token in rag.answer_stream(req.message, history=history):
             yield f"data: {json.dumps({'type': 'token', 'content': token})}\n\n"
 
@@ -104,10 +109,6 @@ def chat_stream(req: ChatRequest):
 
 @app.post("/transcribe")
 async def transcribe(file: UploadFile = File(...)):
-    """
-    Transcribe an audio file using Groq's Whisper endpoint (free tier).
-    Accepts: webm, mp3, wav, m4a, ogg
-    """
     api_key = os.getenv("GROQ_API_KEY")
     if not api_key:
         raise HTTPException(status_code=500, detail="GROQ_API_KEY missing")
