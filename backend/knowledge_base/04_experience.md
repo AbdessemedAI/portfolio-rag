@@ -1,15 +1,24 @@
-# Professional Experience
+# Professional Experience & Internships
 
-## AI Engineer Intern — L'Ours (Oil & Gas Services), March 2024
-Abderrahim developed deep learning models for predictive maintenance on industrial sensor data. He performed feature engineering, model training (PyTorch, Pandas), and evaluation against operational KPIs. The models improved early fault detection accuracy despite working with limited and fragmented sensor data.
+Abderrahim has completed 2 internships:
 
-Specifically, he:
-- Developed a predictive maintenance model to optimize oil well cleaning schedules.
-- Contributed to improving oil reserve detection using deep learning.
-- Worked on applying AI to real operational challenges in the oil and gas sector.
+## Internship 1 — AI Engineer Intern at L'Ours (Oil & Gas Services), March 2024
+Topic: Predictive maintenance on well-testing and coiltubing equipment.
 
-## PLC Engineering Intern — Siemens, July 2023
-At Siemens, Abderrahim worked on industrial automation using Siemens S7-300 and S7-1200 PLCs. He programmed, debugged, and tested control systems using TIA Portal and interacted with HMI (Human-Machine Interface) systems. This internship gave him solid exposure to real-time industrial control systems and taught him how AI models can be grounded in real industrial processes.
+What he did:
+- Learned well-testing and coiltubing operations with field engineers, then identified failure modes.
+- Built a complete deep-learning pipeline from scratch: data cleaning, feature engineering, model training, and evaluation on noisy multi-sensor data.
+- Tools used: PyTorch, Pandas.
+- Result: Improved early fault detection over the rule-based baseline.
 
-## LAN Network Internship
-Abderrahim took part in the deployment of a large-scale LAN network supporting thousands of users. He worked on network configuration, simulation, and basic infrastructure setup. This helped him understand enterprise network architecture in practice.
+This internship gave him hands-on experience with real industrial data — messy, incomplete, and time-sensitive — and taught him how to deliver AI results that engineers can actually use.
+
+## Internship 2 — PLC Engineering Intern at Siemens, July 2023
+Topic: Industrial automation — PLC programming and HMI integration.
+
+What he did:
+- Programmed and debugged Siemens S7-300 / S7-1200 PLCs and HMI screens for process-control routines using TIA Portal.
+- Split a large technical scope across a 3-person team and cross-trained to cover the full system.
+- Result: Fastest team to complete and validate all tasks on real hardware.
+
+This internship gave him solid understanding of real-time industrial control systems and how AI models must integrate with hardware constraints.
