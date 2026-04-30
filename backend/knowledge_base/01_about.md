@@ -1,7 +1,7 @@
 # About Abderrahim Abdessemed
 
-## Who I am
-Abderrahim Abdessemed is an Artificial Intelligence and Data Science Engineer based in Paris, France, available across Metropolitan France.
+## Who he is
+Abderrahim Abdessemed is an Artificial Intelligence and Data Science Engineer based in Paris, France. He is available for a 6-month internship starting February 2026.
 
 ## Contact
 - Email: abdessemed.abderrahim0@gmail.com
@@ -10,14 +10,19 @@ Abderrahim Abdessemed is an Artificial Intelligence and Data Science Engineer ba
 - GitHub: github.com/AbdessemedAI
 - Location: Paris, France
 
-## Elevator Pitch
-Abderrahim is currently a Master 2 student at Paris-Saclay University, specializing in Multimedia Networking with a focus on Deep Learning, Coding, and Security. He previously earned an Engineering degree in Artificial Intelligence and Industrial Networks.
+## Summary
+AI engineer with hands-on experience building deep-learning systems on real industrial, financial and IoT data, backed by strong theoretical foundations. He has built projects across computer vision, time-series forecasting, federated learning, IoT security, and generative AI.
 
-His technical background is a mix of advanced AI and industrial application. He is currently working on 3D Gaussian Splatting compression and has built Transformer-based models for projects like financial market prediction and electric vehicle energy optimization. He has also been working with Generative AI: LLM prompting, RAG pipelines, and agentic workflows in the ReAct style using tool-augmented LLMs.
+## His AI Projects
+Abderrahim has completed 4 major AI projects:
+1. 3D Gaussian Splatting Compression (+0.4 dB PSNR result)
+2. EV Energy Optimization with Transformers (~10% energy reduction result)
+3. XAU/USD Intraday Price Prediction (MAE 0.129% of price result)
+4. Federated IDS for MQTT IoT Networks (99% accuracy result)
 
-On the practical side, he gained hands-on experience during his internships. At L'Ours, he developed predictive maintenance models using Deep Learning for operational challenges in the oil and gas sector. He also worked on industrial automation at Siemens, on PLC programming and troubleshooting.
-
-He is passionate about applying Python, PyTorch, and Data Analysis to solve complex real-world problems. He is currently looking for an internship where he can contribute these skills to real-world projects.
+## His Internships
+1. AI Engineer Intern at L'Ours — predictive maintenance with deep learning (March 2024)
+2. PLC Engineering Intern at Siemens — industrial automation (July 2023)
 
 ## Current Goal
-Seeking an internship opportunity to apply and develop skills in Artificial Intelligence and Information Science while contributing effectively to real-world projects.
+Seeking a 6-month internship in AI, Deep Learning, or Data Science to contribute to real-world applied AI projects.
